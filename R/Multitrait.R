@@ -588,6 +588,13 @@ setLT.BRR_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt,nRow)
 setLT.RKHS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
 {
 
+    if(!is.null(LT$V) && !is.null(LT$d) && is.null(LT$EVD))
+    {
+        LT$EVD <-list()
+        LT$EVD$values<-LT$d
+        LT$EVD$vectors<-LT$V
+    }
+
 	if(is.null(LT$EVD) & is.null(LT$K))
 	{
 		text<-"Either variance co-variance matrix K or its eigen-value decomposition\n"
@@ -618,7 +625,7 @@ setLT.RKHS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
 	{
 		message("Checking EVD provided for linear term ",j)
 		if(!is.matrix(LT$EVD$vectors)) stop("eigen-vectors must be a matrix\n")
-		if(nrow(LT$EVD$vectors)!=ncol(LT$EVD$vectors)) stop("eigen-vectors must be a square matrix\n")
+		#if(nrow(LT$EVD$vectors)!=ncol(LT$EVD$vectors)) stop("eigen-vectors must be a square matrix\n")
 		if(!is.numeric(LT$EVD$values)) stop("eigen-values must be a numeric vector\n")
 		message("Ok")
 	}
@@ -626,7 +633,7 @@ setLT.RKHS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
 	
 	
 	keep <- LT$EVD$values>1e-10
-	LT$EVD$vectors <- LT$EVD$vectors[,keep]
+	LT$EVD$vectors <- LT$EVD$vectors[,keep, drop = FALSE]
 	LT$EVD$values <- LT$EVD$values[keep]
 	
 	#X=Gamma*Lambda^{1/2}
