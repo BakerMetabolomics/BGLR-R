@@ -2151,7 +2151,7 @@ Multitrait<-function(y,
 	
 	#Return the goodies
 	out<-list(ETA=ETA,resCov=resCov,ETAHat=ETAHat,SD.ETAHat=SD.ETAHat,
-	          fit=fit)
+	          fit=fit,saveAt=saveAt)
 	          
 	if(intercept)
 	{
